@@ -1,0 +1,791 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ecommerceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Address">
+    <Key>
+      <PropertyRef Name="IdAddress" />
+    </Key>
+    <Property Name="IdAddress" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Country" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="City" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Zip_code" Type="String" MaxLength="6" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Street_Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Street_Number" Type="Int32" Nullable="false" />
+    <Property Name="State" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Customers" Relationship="Self.FK_Customers_Addresses" FromRole="Addresses" ToRole="Customers" />
+    <NavigationProperty Name="Producers" Relationship="Self.FK_Producer_Adress" FromRole="Addresses" ToRole="Producers" />
+    <NavigationProperty Name="Employees" Relationship="Self.FK_Sellers_Adress" FromRole="Addresses" ToRole="Employees" />
+    <NavigationProperty Name="Suppliers" Relationship="Self.FK_Supplier_Adress" FromRole="Addresses" ToRole="Suppliers" />
+    <NavigationProperty Name="Customers1" Relationship="Self.Customer_Addresses" FromRole="Addresses" ToRole="Customers" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="IdCategory" />
+    </Key>
+    <Property Name="IdCategory" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name_Category" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Description_Category" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="IdParent_Category" Type="Int32" />
+    <NavigationProperty Name="Categories1" Relationship="Self.FK_Categories_Categories" FromRole="Categories" ToRole="Categories1" />
+    <NavigationProperty Name="Category1" Relationship="Self.FK_Categories_Categories" FromRole="Categories1" ToRole="Categories" />
+    <NavigationProperty Name="Products" Relationship="Self.FK_Product_Categories" FromRole="Categories" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="Contact">
+    <Key>
+      <PropertyRef Name="IdContact" />
+    </Key>
+    <Property Name="IdContact" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Phone_Number" Type="String" MaxLength="9" FixedLength="true" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Customers" Relationship="Self.FK_Customer_Contact" FromRole="Contacts" ToRole="Customers" />
+    <NavigationProperty Name="Producers" Relationship="Self.FK_Producer_Contact" FromRole="Contacts" ToRole="Producers" />
+    <NavigationProperty Name="Employees" Relationship="Self.FK_Sellers_Contact" FromRole="Contacts" ToRole="Employees" />
+    <NavigationProperty Name="Suppliers" Relationship="Self.FK_Supplier_Contact" FromRole="Contacts" ToRole="Suppliers" />
+  </EntityType>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="IdCustomer" />
+    </Key>
+    <Property Name="IdCustomer" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdContact" Type="Int32" />
+    <Property Name="IdMainAddress" Type="Int32" />
+    <Property Name="IdLogin_information" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Address" Relationship="Self.FK_Customers_Addresses" FromRole="Customers" ToRole="Addresses" />
+    <NavigationProperty Name="Contact" Relationship="Self.FK_Customer_Contact" FromRole="Customers" ToRole="Contacts" />
+    <NavigationProperty Name="Login_informations" Relationship="Self.FK_Customer_Login_information" FromRole="Customers" ToRole="Login_informations" />
+    <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Customer" FromRole="Customers" ToRole="Orders" />
+    <NavigationProperty Name="Addresses" Relationship="Self.Customer_Addresses" FromRole="Customers" ToRole="Addresses" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="IdEmployee" />
+    </Key>
+    <Property Name="IdEmployee" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdContact" Type="Int32" />
+    <Property Name="IdAddress" Type="Int32" />
+    <Property Name="IdLogin_information" Type="Int32" Nullable="false" />
+    <Property Name="IdGroup" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Address" Relationship="Self.FK_Sellers_Adress" FromRole="Employees" ToRole="Addresses" />
+    <NavigationProperty Name="Contact" Relationship="Self.FK_Sellers_Contact" FromRole="Employees" ToRole="Contacts" />
+    <NavigationProperty Name="Group" Relationship="Self.FK_Empolyess_Group" FromRole="Employees" ToRole="Groups" />
+    <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Sellers" FromRole="Employees" ToRole="Orders" />
+    <NavigationProperty Name="Login_informations" Relationship="Self.FK_Sellers_Login_information" FromRole="Employees" ToRole="Login_informations" />
+  </EntityType>
+  <EntityType Name="Group">
+    <Key>
+      <PropertyRef Name="IdGroup" />
+    </Key>
+    <Property Name="IdGroup" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Role" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Employees" Relationship="Self.FK_Empolyess_Group" FromRole="Groups" ToRole="Employees" />
+  </EntityType>
+  <EntityType Name="Login_informations">
+    <Key>
+      <PropertyRef Name="IdLogin_information" />
+    </Key>
+    <Property Name="IdLogin_information" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Customers" Relationship="Self.FK_Customer_Login_information" FromRole="Login_informations" ToRole="Customers" />
+    <NavigationProperty Name="Employees" Relationship="Self.FK_Sellers_Login_information" FromRole="Login_informations" ToRole="Employees" />
+  </EntityType>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="IdOrder" />
+    </Key>
+    <Property Name="IdOrder" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdCustomer" Type="Int32" Nullable="false" />
+    <Property Name="IdEmployee" Type="Int32" />
+    <Property Name="IdStatus_Order" Type="Int32" />
+    <Property Name="IdPayment_Method" Type="Int32" />
+    <Property Name="IdShippment_Method" Type="Int32" />
+    <Property Name="Description_Order" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Date_Order" Type="DateTime" Precision="3" />
+    <Property Name="Date_Shippment" Type="DateTime" Precision="3" />
+    <Property Name="Orders_Discount_Percent" Type="Int32" Nullable="false" />
+    <Property Name="Amount_Order" Type="Decimal" Precision="19" Scale="4" />
+    <NavigationProperty Name="Customer" Relationship="Self.FK_Orders_Customer" FromRole="Orders" ToRole="Customers" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_Orders_Sellers" FromRole="Orders" ToRole="Employees" />
+    <NavigationProperty Name="Order_Details" Relationship="Self.FK_Orders_Items_Orders" FromRole="Orders" ToRole="Order_Details" />
+    <NavigationProperty Name="Payment_Methods" Relationship="Self.FK_Orders_Payment_Method" FromRole="Orders" ToRole="Payment_Methods" />
+    <NavigationProperty Name="Shippment_Methods" Relationship="Self.FK_Orders_Shippment_Method" FromRole="Orders" ToRole="Shippment_Methods" />
+    <NavigationProperty Name="Status_Orders" Relationship="Self.FK_Orders_Status" FromRole="Orders" ToRole="Status_Orders" />
+    <NavigationProperty Name="Reclamations" Relationship="Self.FK_Reclamations_Orders1" FromRole="Orders" ToRole="Reclamations" />
+    <NavigationProperty Name="Returns" Relationship="Self.FK_Returns_Orders" FromRole="Orders" ToRole="Returns" />
+  </EntityType>
+  <EntityType Name="Payment_Methods">
+    <Key>
+      <PropertyRef Name="IdPayment_Method" />
+    </Key>
+    <Property Name="IdPayment_Method" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name_Payment_Method" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Description_Payment_Method" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Payment_Method" FromRole="Payment_Methods" ToRole="Orders" />
+  </EntityType>
+  <EntityType Name="Producer">
+    <Key>
+      <PropertyRef Name="IdProducer" />
+    </Key>
+    <Property Name="IdProducer" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name_Producer" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="IdAddress" Type="Int32" />
+    <Property Name="IdContact" Type="Int32" />
+    <NavigationProperty Name="Address" Relationship="Self.FK_Producer_Adress" FromRole="Producers" ToRole="Addresses" />
+    <NavigationProperty Name="Contact" Relationship="Self.FK_Producer_Contact" FromRole="Producers" ToRole="Contacts" />
+    <NavigationProperty Name="Products" Relationship="Self.FK_Product_Producer" FromRole="Producers" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="IdProduct" />
+    </Key>
+    <Property Name="IdProduct" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdCategory" Type="Int32" Nullable="false" />
+    <Property Name="IdProducer" Type="Int32" />
+    <Property Name="Name_Product" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Quantity_Possessed" Type="Int32" />
+    <Property Name="Gross_Price" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="IdSupplier" Type="Int32" />
+    <Property Name="Description_Product" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Net_Price" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="IdTax_Level" Type="Int32" />
+    <Property Name="Image_Url" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Category" Relationship="Self.FK_Product_Categories" FromRole="Products" ToRole="Categories" />
+    <NavigationProperty Name="Producer" Relationship="Self.FK_Product_Producer" FromRole="Products" ToRole="Producers" />
+    <NavigationProperty Name="Order_Details" Relationship="Self.FK_Orders_Items_Product" FromRole="Products" ToRole="Order_Details" />
+    <NavigationProperty Name="Supplier" Relationship="Self.FK_Product_Supplier" FromRole="Products" ToRole="Suppliers" />
+    <NavigationProperty Name="Taxes_Level" Relationship="Self.FK_Products_Taxes_Level" FromRole="Products" ToRole="Taxes_Level" />
+    <NavigationProperty Name="Reclamations" Relationship="Self.FK_Reclamations_Products" FromRole="Products" ToRole="Reclamations" />
+    <NavigationProperty Name="Supply_Details" Relationship="Self.FK_Supply_Detail_Product" FromRole="Products" ToRole="Supply_Details" />
+    <NavigationProperty Name="Returns" Relationship="Self.Return_Details" FromRole="Products" ToRole="Returns" />
+  </EntityType>
+  <EntityType Name="Reclamation">
+    <Key>
+      <PropertyRef Name="IdReclamation" />
+    </Key>
+    <Property Name="IdReclamation" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdOrder" Type="Int32" Nullable="false" />
+    <Property Name="IdStatus_Reclamation" Type="Int32" />
+    <Property Name="IdProduct" Type="Int32" Nullable="false" />
+    <Property Name="Date_reclamation" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Description_Reclamation" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Order" Relationship="Self.FK_Reclamations_Orders1" FromRole="Reclamations" ToRole="Orders" />
+    <NavigationProperty Name="Product" Relationship="Self.FK_Reclamations_Products" FromRole="Reclamations" ToRole="Products" />
+    <NavigationProperty Name="Status_Reclamation" Relationship="Self.FK_Reclamations_Status_Reclamation" FromRole="Reclamations" ToRole="Status_Reclamation" />
+  </EntityType>
+  <EntityType Name="Return">
+    <Key>
+      <PropertyRef Name="IdReturn" />
+    </Key>
+    <Property Name="IdReturn" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdOrder" Type="Int32" Nullable="false" />
+    <Property Name="Date_Return" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Order" Relationship="Self.FK_Returns_Orders" FromRole="Returns" ToRole="Orders" />
+    <NavigationProperty Name="Products" Relationship="Self.Return_Details" FromRole="Returns" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="Shippment_Methods">
+    <Key>
+      <PropertyRef Name="IdShippment_Method" />
+    </Key>
+    <Property Name="IdShippment_Method" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name_Shippment_Method" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Description_Shippment_Method" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Price_Shippment_Method" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Shippment_Method" FromRole="Shippment_Methods" ToRole="Orders" />
+  </EntityType>
+  <EntityType Name="Status_Orders">
+    <Key>
+      <PropertyRef Name="IdStatus_Order" />
+    </Key>
+    <Property Name="IdStatus_Order" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name_Status_Order" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Status" FromRole="Status_Orders" ToRole="Orders" />
+  </EntityType>
+  <EntityType Name="Status_Reclamation">
+    <Key>
+      <PropertyRef Name="IdStatus_Reclamation" />
+    </Key>
+    <Property Name="IdStatus_Reclamation" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name_Status_Reclamation" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Reclamations" Relationship="Self.FK_Reclamations_Status_Reclamation" FromRole="Status_Reclamation" ToRole="Reclamations" />
+  </EntityType>
+  <EntityType Name="Supplier">
+    <Key>
+      <PropertyRef Name="IdSupplier" />
+    </Key>
+    <Property Name="IdSupplier" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name_Supplier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="IdAddress" Type="Int32" />
+    <Property Name="IdContact" Type="Int32" />
+    <NavigationProperty Name="Address" Relationship="Self.FK_Supplier_Adress" FromRole="Suppliers" ToRole="Addresses" />
+    <NavigationProperty Name="Contact" Relationship="Self.FK_Supplier_Contact" FromRole="Suppliers" ToRole="Contacts" />
+    <NavigationProperty Name="Products" Relationship="Self.FK_Product_Supplier" FromRole="Suppliers" ToRole="Products" />
+    <NavigationProperty Name="Supplies" Relationship="Self.FK_Supply_Supplier" FromRole="Suppliers" ToRole="Supply" />
+  </EntityType>
+  <EntityType Name="Supply">
+    <Key>
+      <PropertyRef Name="IdSupply" />
+    </Key>
+    <Property Name="IdSupply" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Data_Supply" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Price_Supply" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="IdSupplier" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Supplier" Relationship="Self.FK_Supply_Supplier" FromRole="Supply" ToRole="Suppliers" />
+    <NavigationProperty Name="Supply_Details" Relationship="Self.FK_Supply_Detail_Supply" FromRole="Supply" ToRole="Supply_Details" />
+  </EntityType>
+  <EntityType Name="Taxes_Level">
+    <Key>
+      <PropertyRef Name="IdTax_Level" />
+    </Key>
+    <Property Name="IdTax_Level" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name_Tax" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Tax_Percent" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Products" Relationship="Self.FK_Products_Taxes_Level" FromRole="Taxes_Level" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="Order_Details">
+    <Key>
+      <PropertyRef Name="IdOrder" />
+      <PropertyRef Name="IdProduct" />
+      <PropertyRef Name="Quantity_Ordered" />
+    </Key>
+    <Property Name="IdOrder" Type="Int32" Nullable="false" />
+    <Property Name="IdProduct" Type="Int32" Nullable="false" />
+    <Property Name="Quantity_Ordered" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Order" Relationship="Self.FK_Orders_Items_Orders" FromRole="Order_Details" ToRole="Orders" />
+    <NavigationProperty Name="Product" Relationship="Self.FK_Orders_Items_Product" FromRole="Order_Details" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="Supply_Details">
+    <Key>
+      <PropertyRef Name="IdSupply" />
+      <PropertyRef Name="IdProduct" />
+      <PropertyRef Name="Price_Item" />
+      <PropertyRef Name="Quantity_Supplied" />
+    </Key>
+    <Property Name="IdSupply" Type="Int32" Nullable="false" />
+    <Property Name="IdProduct" Type="Int32" Nullable="false" />
+    <Property Name="Price_Item" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Quantity_Supplied" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Product" Relationship="Self.FK_Supply_Detail_Product" FromRole="Supply_Details" ToRole="Products" />
+    <NavigationProperty Name="Supply" Relationship="Self.FK_Supply_Detail_Supply" FromRole="Supply_Details" ToRole="Supply" />
+  </EntityType>
+  <Association Name="FK_Customers_Addresses">
+    <End Role="Addresses" Type="Self.Address" Multiplicity="0..1" />
+    <End Role="Customers" Type="Self.Customer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Addresses">
+        <PropertyRef Name="IdAddress" />
+      </Principal>
+      <Dependent Role="Customers">
+        <PropertyRef Name="IdMainAddress" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Producer_Adress">
+    <End Role="Addresses" Type="Self.Address" Multiplicity="0..1" />
+    <End Role="Producers" Type="Self.Producer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Addresses">
+        <PropertyRef Name="IdAddress" />
+      </Principal>
+      <Dependent Role="Producers">
+        <PropertyRef Name="IdAddress" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Sellers_Adress">
+    <End Role="Addresses" Type="Self.Address" Multiplicity="0..1" />
+    <End Role="Employees" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Addresses">
+        <PropertyRef Name="IdAddress" />
+      </Principal>
+      <Dependent Role="Employees">
+        <PropertyRef Name="IdAddress" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Supplier_Adress">
+    <End Role="Addresses" Type="Self.Address" Multiplicity="0..1" />
+    <End Role="Suppliers" Type="Self.Supplier" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Addresses">
+        <PropertyRef Name="IdAddress" />
+      </Principal>
+      <Dependent Role="Suppliers">
+        <PropertyRef Name="IdAddress" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Categories_Categories">
+    <End Role="Categories" Type="Self.Category" Multiplicity="0..1" />
+    <End Role="Categories1" Type="Self.Category" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="IdCategory" />
+      </Principal>
+      <Dependent Role="Categories1">
+        <PropertyRef Name="IdParent_Category" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Product_Categories">
+    <End Role="Categories" Type="Self.Category" Multiplicity="1" />
+    <End Role="Products" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="IdCategory" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="IdCategory" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Customer_Contact">
+    <End Role="Contacts" Type="Self.Contact" Multiplicity="0..1" />
+    <End Role="Customers" Type="Self.Customer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Contacts">
+        <PropertyRef Name="IdContact" />
+      </Principal>
+      <Dependent Role="Customers">
+        <PropertyRef Name="IdContact" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Producer_Contact">
+    <End Role="Contacts" Type="Self.Contact" Multiplicity="0..1" />
+    <End Role="Producers" Type="Self.Producer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Contacts">
+        <PropertyRef Name="IdContact" />
+      </Principal>
+      <Dependent Role="Producers">
+        <PropertyRef Name="IdContact" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Sellers_Contact">
+    <End Role="Contacts" Type="Self.Contact" Multiplicity="0..1" />
+    <End Role="Employees" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Contacts">
+        <PropertyRef Name="IdContact" />
+      </Principal>
+      <Dependent Role="Employees">
+        <PropertyRef Name="IdContact" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Supplier_Contact">
+    <End Role="Contacts" Type="Self.Contact" Multiplicity="0..1" />
+    <End Role="Suppliers" Type="Self.Supplier" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Contacts">
+        <PropertyRef Name="IdContact" />
+      </Principal>
+      <Dependent Role="Suppliers">
+        <PropertyRef Name="IdContact" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Customer_Login_information">
+    <End Role="Login_informations" Type="Self.Login_informations" Multiplicity="1" />
+    <End Role="Customers" Type="Self.Customer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Login_informations">
+        <PropertyRef Name="IdLogin_information" />
+      </Principal>
+      <Dependent Role="Customers">
+        <PropertyRef Name="IdLogin_information" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_Customer">
+    <End Role="Customers" Type="Self.Customer" Multiplicity="1" />
+    <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customers">
+        <PropertyRef Name="IdCustomer" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="IdCustomer" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Empolyess_Group">
+    <End Role="Groups" Type="Self.Group" Multiplicity="1" />
+    <End Role="Employees" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Groups">
+        <PropertyRef Name="IdGroup" />
+      </Principal>
+      <Dependent Role="Employees">
+        <PropertyRef Name="IdGroup" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_Sellers">
+    <End Role="Employees" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="IdEmployee" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="IdEmployee" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Sellers_Login_information">
+    <End Role="Login_informations" Type="Self.Login_informations" Multiplicity="1" />
+    <End Role="Employees" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Login_informations">
+        <PropertyRef Name="IdLogin_information" />
+      </Principal>
+      <Dependent Role="Employees">
+        <PropertyRef Name="IdLogin_information" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_Items_Orders">
+    <End Role="Orders" Type="Self.Order" Multiplicity="1" />
+    <End Role="Order_Details" Type="Self.Order_Details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Orders">
+        <PropertyRef Name="IdOrder" />
+      </Principal>
+      <Dependent Role="Order_Details">
+        <PropertyRef Name="IdOrder" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_Payment_Method">
+    <End Role="Payment_Methods" Type="Self.Payment_Methods" Multiplicity="0..1" />
+    <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Payment_Methods">
+        <PropertyRef Name="IdPayment_Method" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="IdPayment_Method" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_Shippment_Method">
+    <End Role="Shippment_Methods" Type="Self.Shippment_Methods" Multiplicity="0..1" />
+    <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Shippment_Methods">
+        <PropertyRef Name="IdShippment_Method" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="IdShippment_Method" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_Status">
+    <End Role="Status_Orders" Type="Self.Status_Orders" Multiplicity="0..1" />
+    <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Status_Orders">
+        <PropertyRef Name="IdStatus_Order" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="IdStatus_Order" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Reclamations_Orders1">
+    <End Role="Orders" Type="Self.Order" Multiplicity="1" />
+    <End Role="Reclamations" Type="Self.Reclamation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Orders">
+        <PropertyRef Name="IdOrder" />
+      </Principal>
+      <Dependent Role="Reclamations">
+        <PropertyRef Name="IdOrder" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Returns_Orders">
+    <End Role="Orders" Type="Self.Order" Multiplicity="1" />
+    <End Role="Returns" Type="Self.Return" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Orders">
+        <PropertyRef Name="IdOrder" />
+      </Principal>
+      <Dependent Role="Returns">
+        <PropertyRef Name="IdOrder" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Product_Producer">
+    <End Role="Producers" Type="Self.Producer" Multiplicity="0..1" />
+    <End Role="Products" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Producers">
+        <PropertyRef Name="IdProducer" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="IdProducer" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_Items_Product">
+    <End Role="Products" Type="Self.Product" Multiplicity="1" />
+    <End Role="Order_Details" Type="Self.Order_Details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="IdProduct" />
+      </Principal>
+      <Dependent Role="Order_Details">
+        <PropertyRef Name="IdProduct" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Product_Supplier">
+    <End Role="Suppliers" Type="Self.Supplier" Multiplicity="0..1" />
+    <End Role="Products" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Suppliers">
+        <PropertyRef Name="IdSupplier" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="IdSupplier" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Products_Taxes_Level">
+    <End Role="Taxes_Level" Type="Self.Taxes_Level" Multiplicity="0..1" />
+    <End Role="Products" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Taxes_Level">
+        <PropertyRef Name="IdTax_Level" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="IdTax_Level" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Reclamations_Products">
+    <End Role="Products" Type="Self.Product" Multiplicity="1" />
+    <End Role="Reclamations" Type="Self.Reclamation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="IdProduct" />
+      </Principal>
+      <Dependent Role="Reclamations">
+        <PropertyRef Name="IdProduct" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Supply_Detail_Product">
+    <End Role="Products" Type="Self.Product" Multiplicity="1" />
+    <End Role="Supply_Details" Type="Self.Supply_Details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="IdProduct" />
+      </Principal>
+      <Dependent Role="Supply_Details">
+        <PropertyRef Name="IdProduct" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Reclamations_Status_Reclamation">
+    <End Role="Status_Reclamation" Type="Self.Status_Reclamation" Multiplicity="0..1" />
+    <End Role="Reclamations" Type="Self.Reclamation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Status_Reclamation">
+        <PropertyRef Name="IdStatus_Reclamation" />
+      </Principal>
+      <Dependent Role="Reclamations">
+        <PropertyRef Name="IdStatus_Reclamation" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Supply_Supplier">
+    <End Role="Suppliers" Type="Self.Supplier" Multiplicity="1" />
+    <End Role="Supply" Type="Self.Supply" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Suppliers">
+        <PropertyRef Name="IdSupplier" />
+      </Principal>
+      <Dependent Role="Supply">
+        <PropertyRef Name="IdSupplier" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Supply_Detail_Supply">
+    <End Role="Supply" Type="Self.Supply" Multiplicity="1" />
+    <End Role="Supply_Details" Type="Self.Supply_Details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Supply">
+        <PropertyRef Name="IdSupply" />
+      </Principal>
+      <Dependent Role="Supply_Details">
+        <PropertyRef Name="IdSupply" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Customer_Addresses">
+    <End Role="Addresses" Type="Self.Address" Multiplicity="*" />
+    <End Role="Customers" Type="Self.Customer" Multiplicity="*" />
+  </Association>
+  <Association Name="Return_Details">
+    <End Role="Products" Type="Self.Product" Multiplicity="*" />
+    <End Role="Returns" Type="Self.Return" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="ecommerceEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Addresses" EntityType="Self.Address" />
+    <EntitySet Name="Categories" EntityType="Self.Category" />
+    <EntitySet Name="Contacts" EntityType="Self.Contact" />
+    <EntitySet Name="Customers" EntityType="Self.Customer" />
+    <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="Groups" EntityType="Self.Group" />
+    <EntitySet Name="Login_informations" EntityType="Self.Login_informations" />
+    <EntitySet Name="Orders" EntityType="Self.Order" />
+    <EntitySet Name="Payment_Methods" EntityType="Self.Payment_Methods" />
+    <EntitySet Name="Producers" EntityType="Self.Producer" />
+    <EntitySet Name="Products" EntityType="Self.Product" />
+    <EntitySet Name="Reclamations" EntityType="Self.Reclamation" />
+    <EntitySet Name="Returns" EntityType="Self.Return" />
+    <EntitySet Name="Shippment_Methods" EntityType="Self.Shippment_Methods" />
+    <EntitySet Name="Status_Orders" EntityType="Self.Status_Orders" />
+    <EntitySet Name="Status_Reclamation" EntityType="Self.Status_Reclamation" />
+    <EntitySet Name="Suppliers" EntityType="Self.Supplier" />
+    <EntitySet Name="Supplies" EntityType="Self.Supply" />
+    <EntitySet Name="Taxes_Level" EntityType="Self.Taxes_Level" />
+    <EntitySet Name="Order_Details" EntityType="Self.Order_Details" />
+    <EntitySet Name="Supply_Details" EntityType="Self.Supply_Details" />
+    <AssociationSet Name="FK_Customers_Addresses" Association="Self.FK_Customers_Addresses">
+      <End Role="Addresses" EntitySet="Addresses" />
+      <End Role="Customers" EntitySet="Customers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Producer_Adress" Association="Self.FK_Producer_Adress">
+      <End Role="Addresses" EntitySet="Addresses" />
+      <End Role="Producers" EntitySet="Producers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sellers_Adress" Association="Self.FK_Sellers_Adress">
+      <End Role="Addresses" EntitySet="Addresses" />
+      <End Role="Employees" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Supplier_Adress" Association="Self.FK_Supplier_Adress">
+      <End Role="Addresses" EntitySet="Addresses" />
+      <End Role="Suppliers" EntitySet="Suppliers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Categories_Categories" Association="Self.FK_Categories_Categories">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="Categories1" EntitySet="Categories" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_Categories" Association="Self.FK_Product_Categories">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Customer_Contact" Association="Self.FK_Customer_Contact">
+      <End Role="Contacts" EntitySet="Contacts" />
+      <End Role="Customers" EntitySet="Customers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Producer_Contact" Association="Self.FK_Producer_Contact">
+      <End Role="Contacts" EntitySet="Contacts" />
+      <End Role="Producers" EntitySet="Producers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sellers_Contact" Association="Self.FK_Sellers_Contact">
+      <End Role="Contacts" EntitySet="Contacts" />
+      <End Role="Employees" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Supplier_Contact" Association="Self.FK_Supplier_Contact">
+      <End Role="Contacts" EntitySet="Contacts" />
+      <End Role="Suppliers" EntitySet="Suppliers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Customer_Login_information" Association="Self.FK_Customer_Login_information">
+      <End Role="Login_informations" EntitySet="Login_informations" />
+      <End Role="Customers" EntitySet="Customers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_Customer" Association="Self.FK_Orders_Customer">
+      <End Role="Customers" EntitySet="Customers" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Empolyess_Group" Association="Self.FK_Empolyess_Group">
+      <End Role="Groups" EntitySet="Groups" />
+      <End Role="Employees" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_Sellers" Association="Self.FK_Orders_Sellers">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sellers_Login_information" Association="Self.FK_Sellers_Login_information">
+      <End Role="Login_informations" EntitySet="Login_informations" />
+      <End Role="Employees" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_Items_Orders" Association="Self.FK_Orders_Items_Orders">
+      <End Role="Orders" EntitySet="Orders" />
+      <End Role="Order_Details" EntitySet="Order_Details" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_Payment_Method" Association="Self.FK_Orders_Payment_Method">
+      <End Role="Payment_Methods" EntitySet="Payment_Methods" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_Shippment_Method" Association="Self.FK_Orders_Shippment_Method">
+      <End Role="Shippment_Methods" EntitySet="Shippment_Methods" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_Status" Association="Self.FK_Orders_Status">
+      <End Role="Status_Orders" EntitySet="Status_Orders" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Reclamations_Orders1" Association="Self.FK_Reclamations_Orders1">
+      <End Role="Orders" EntitySet="Orders" />
+      <End Role="Reclamations" EntitySet="Reclamations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Returns_Orders" Association="Self.FK_Returns_Orders">
+      <End Role="Orders" EntitySet="Orders" />
+      <End Role="Returns" EntitySet="Returns" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_Producer" Association="Self.FK_Product_Producer">
+      <End Role="Producers" EntitySet="Producers" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_Items_Product" Association="Self.FK_Orders_Items_Product">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="Order_Details" EntitySet="Order_Details" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_Supplier" Association="Self.FK_Product_Supplier">
+      <End Role="Suppliers" EntitySet="Suppliers" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Products_Taxes_Level" Association="Self.FK_Products_Taxes_Level">
+      <End Role="Taxes_Level" EntitySet="Taxes_Level" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Reclamations_Products" Association="Self.FK_Reclamations_Products">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="Reclamations" EntitySet="Reclamations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Supply_Detail_Product" Association="Self.FK_Supply_Detail_Product">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="Supply_Details" EntitySet="Supply_Details" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Reclamations_Status_Reclamation" Association="Self.FK_Reclamations_Status_Reclamation">
+      <End Role="Status_Reclamation" EntitySet="Status_Reclamation" />
+      <End Role="Reclamations" EntitySet="Reclamations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Supply_Supplier" Association="Self.FK_Supply_Supplier">
+      <End Role="Suppliers" EntitySet="Suppliers" />
+      <End Role="Supply" EntitySet="Supplies" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Supply_Detail_Supply" Association="Self.FK_Supply_Detail_Supply">
+      <End Role="Supply" EntitySet="Supplies" />
+      <End Role="Supply_Details" EntitySet="Supply_Details" />
+    </AssociationSet>
+    <AssociationSet Name="Customer_Addresses" Association="Self.Customer_Addresses">
+      <End Role="Addresses" EntitySet="Addresses" />
+      <End Role="Customers" EntitySet="Customers" />
+    </AssociationSet>
+    <AssociationSet Name="Return_Details" Association="Self.Return_Details">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="Returns" EntitySet="Returns" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
